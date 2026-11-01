@@ -17,10 +17,8 @@ print("=" * 55)
 print("   GSM SECURITY SIMULATION : A3 / A8 / A5")
 print("=" * 55)
 
-
-Ki = os.urandom(16)
-print("Ki (shared secret, 128-bit) :", Ki.hex())
-RAND = os.urandom(16)
+Ki = bytes.fromhex(input("Enter Ki (32 hex digits): "))
+RAND = bytes.fromhex(input("Enter RAND (32 hex digits): "))
 
 SRES_net = A3(Ki, RAND)
 Kc_net = A8(Ki, RAND)
@@ -33,8 +31,8 @@ print("[Mobile] Kc computed    (A8):", Kc_ms.hex())
 print("\nAuthentication :", "SUCCESS (SRES match)" if SRES_ms == SRES_net else "FAILED")
 
 
-msg = b"Hello GSM"
-frame = 42
+msg = input("\nEnter message to encrypt: ").encode()
+frame = int(input("Enter frame number: "))
 ct = A5(Kc_ms, frame, msg)
 pt = A5(Kc_net, frame, ct)
 print("\nPlaintext      :", msg.decode())
